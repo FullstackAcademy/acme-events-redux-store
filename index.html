@@ -1,0 +1,144 @@
+<html>
+  <head>
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.4/redux.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.1/react-router-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <style>
+      body {
+        font-family: verdana;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      a {
+        padding: 0.5rem;
+      }
+
+      .active {
+        background-color: tomato;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { createStore, combineReducers } = Redux;
+      const { HashRouter, Link, Route } = ReactRouterDOM;
+      const initialState = {
+        events: [],
+        title: "",
+        description: "",
+        date: "",
+      };
+
+      const reducer = (state = initialState, action) => {
+        switch (action.type) {
+          case "GOT.EVENTS":
+            return {
+              ...state,
+              events: action.events,
+            };
+          default:
+            return state;
+        }
+      };
+      const store = createStore(reducer);
+
+      class Events extends React.Component {
+        render() {
+          return null;
+        }
+      }
+
+      class Nav extends React.Component {
+        render() {
+          const { events } = store.getState();
+          return (
+            <div>
+              <Link to="/">Home </Link>
+              <Link to="/events">{`Events (${events.length})`} </Link>
+            </div>
+          );
+        }
+      }
+      class Home extends React.Component {
+        render() {
+          const { events } = store.getState();
+          return <h1>You have {events.length} events!</h1>;
+        }
+      }
+      class App extends React.Component {
+        state = {
+          events: [],
+        };
+        componentDidMount() {
+          this.unsubscribe = store.subscribe(() =>
+            this.setState(store.getState())
+          );
+          axios.get("/api/events").then((res) => {
+            console.log(res.data);
+            // this.setState({
+            //   events: res.data,
+            // });
+            store.dispatch({
+              type: "GOT.EVENTS",
+              events: res.data,
+            });
+          });
+        }
+        fetchEvents() {
+          store.getState();
+        }
+        render() {
+          console.log("rendering state ", this.state);
+          return (
+            <HashRouter>
+              <h1> Acme Events with Redux </h1>
+              <Route component={Nav} />
+              <Route path="/" component={Home} exact />
+              <Route path="/events" component={Events} />
+            </HashRouter>
+          );
+        }
+      }
+      const connect = (Component) => {
+        class Connected extends React.Component {
+          constructor() {
+            super();
+            this.state = store.getState();
+          }
+          componentWillUnmount() {
+            this.unsubscribe();
+          }
+          componentDidMount() {
+            this.unsubscribe = store.subscribe(() =>
+              this.setState(store.getState())
+            );
+          }
+          render() {
+            return <Component {...this.state} {...this.props} />;
+          }
+        }
+        return Connected;
+      };
+
+      ReactDOM.render(<App />, document.querySelector("#root"));
+    </script>
+  </body>
+</html>

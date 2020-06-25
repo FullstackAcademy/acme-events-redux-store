@@ -1,0 +1,31 @@
+{
+  "name": "acme-events-redux-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "start:dev": "node-dev --respawn server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FullstackAcademy/acme-events-redux-store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FullstackAcademy/acme-events-redux-store/issues"
+  },
+  "homepage": "https://github.com/FullstackAcademy/acme-events-redux-store#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "faker": "^4.1.0",
+    "node-dev": "^4.0.0",
+    "pg": "^8.2.1",
+    "redux": "^4.0.5",
+    "redux-store": "0.0.0",
+    "sequelize": "^6.1.0"
+  }
+}
