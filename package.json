@@ -26,6 +26,6 @@
     "pg": "^8.2.1",
     "redux": "^4.0.5",
     "redux-store": "0.0.0",
-    "sequelize": "^6.1.0"
+    "sequelize": "^6.28.2"
   }
 }
