@@ -22,8 +22,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "faker": "^4.1.0",
-    "node-dev": "^4.0.0",
-    "pg": "^8.2.1",
+    "node-dev": "^8.0.0",
+    "pg": "^8.11.1",
     "redux": "^4.0.5",
     "redux-store": "0.0.0",
     "sequelize": "^6.1.0"
